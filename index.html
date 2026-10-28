@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Green Cloud Optimizer</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="{{ url_for('index') }}"><span class="brand-icon">☁</span> Green Cloud Optimizer</a>
+    <span class="demo-label">ACADEMIC DEMO</span>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">SUSTAINABLE CLOUD COMPUTING</p>
+        <h1>Make cloud resources<br><span>work smarter.</span></h1>
+        <p class="intro">Review simulated server utilization, estimate energy use, and discover opportunities to reduce resource waste.</p>
+        <form action="{{ url_for('simulate') }}" method="post">
+          <button class="primary-button" type="submit">↻ Simulate new readings</button>
+        </form>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+        <div class="cloud">☁</div><div class="leaf">↗</div>
+        <p>EFFICIENCY<br><strong>MEETS SUSTAINABILITY</strong></p>
+      </div>
+    </section>
+
+    <section class="metrics" aria-label="Summary metrics">
+      <article class="metric-card"><span class="metric-icon">▦</span><p>Monitored servers</p><strong>{{ servers|length }}</strong><small>Simulated instances</small></article>
+      <article class="metric-card"><span class="metric-icon">◴</span><p>Average CPU usage</p><strong>{{ avg_cpu }}<small class="unit">%</small></strong><small>Across all demo servers</small></article>
+      <article class="metric-card"><span class="metric-icon">▤</span><p>Average memory usage</p><strong>{{ avg_memory }}<small class="unit">%</small></strong><small>Across all demo servers</small></article>
+      <article class="metric-card"><span class="metric-icon">ϟ</span><p>Estimated energy</p><strong>{{ energy }}<small class="unit"> kWh</small></strong><small>Illustrative model only</small></article>
+    </section>
+
+    <section class="section-heading">
+      <div><p class="eyebrow">RESOURCE OVERVIEW</p><h2>Server health and recommendations</h2></div>
+      <span class="updated">Updated {{ updated_at }}</span>
+    </section>
+
+    <section class="server-list">
+      {% for server in servers %}
+      <article class="server-card">
+        <div class="server-title">
+          <div class="server-symbol">▣</div>
+          <div><h3>{{ server.name }}</h3><p><span class="status-dot"></span>{{ server.status }}</p></div>
+          <span class="energy-tag">{{ server.estimated_kwh }} kWh est.</span>
+        </div>
+        <div class="usage-row"><div><span>CPU usage</span><strong>{{ server.cpu }}%</strong></div><div class="progress"><span style="width: {{ server.cpu }}%"></span></div></div>
+        <div class="usage-row"><div><span>Memory usage</span><strong>{{ server.memory }}%</strong></div><div class="progress memory"><span style="width: {{ server.memory }}%"></span></div></div>
+        <div class="recommendation {{ server.level }}"><strong>Recommendation</strong><p>{{ server.recommendation }}</p></div>
+      </article>
+      {% endfor %}
+    </section>
+
+    <section class="savings-panel">
+      <div class="savings-icon">♻</div>
+      <div><p class="eyebrow">OPTIMIZATION OPPORTUNITY</p><h2>{{ potential_saving }} kWh illustrative potential</h2><p>This estimate flags lightly used demo servers for review. It is not a measured saving or a guarantee.</p></div>
+    </section>
+
+    <section class="method-note">
+      <h2>How this demo works</h2>
+      <p>The app calculates simple illustrative energy estimates from CPU usage and gives rule-based recommendations based on CPU and memory thresholds. The readings are simulated locally; the app does not connect to AWS, Azure, Google Cloud, or physical servers.</p>
+    </section>
+  </main>
+  <footer>Green Cloud Optimizer · Student project prototype · Built with Python and Flask</footer>
+</body>
+</html>
